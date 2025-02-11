@@ -288,20 +288,26 @@ class CategoryAdmin(admin.ModelAdmin):
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Page)
 ```
+
 ```python
 # 实现字段纵向排列
 class ChoiceInline(admin.TabularInline):
     # ...
 ```
 
+
 **Customize the admin change list**
+
 让admin主页显示其余属性的内容
+
 ```python
 class CategoryAdmin(admin.ModelAdmin):
     # ...
     list_display = ('views', 'likes')
 
 ```
+
+
 **为admin添加过滤器**
 ```python
 class Category(models.Model):
@@ -313,4 +319,37 @@ class Category(models.Model):
 list_filter = ['views']
 ```
 
+# 7. slug
 
+```python
+# models.py
+from django.template.defaultfilters import slugify
+slug = models.SlugField(unique=True)
+
+def save(self, *args, **kwargs):
+    self.slug = slugify(self.name)
+    super(Category, self).save(*args, **kwargs)
+```
+
+
+```python
+# Add in this class to customise the Admin Interface 
+class CategoryAdmin(admin.ModelAdmin): 
+  prepopulated_fields = {'slug':('name',)} 
+  
+# Update the registration to include this customised interface 
+admin.site.register(Category, CategoryAdmin)
+```
+
+
+```python
+# url
+path('category/<slug:category_name_slug>/', views.show_category, name='show_category'),
+# <slug:category_name_slug>作为参数传递views.show_category 视图
+
+def show_category(request, category_name_slug):
+  category = Category.objects.get(slug=category_name_slug)
+  # ...
+  return ...
+# 视图函数 show_category 通过 category_name_slug 查询数据库，返回对应分类
+```

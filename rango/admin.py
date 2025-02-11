@@ -17,6 +17,10 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'views', 'likes')
     #list_filter = ['views']
 
+    prepopulated_fields = {'slug': ('name',)}
+
+
+
 class PageAdmin(admin.ModelAdmin):
     fieldsets = [
         ('details', {'fields': ['title', 'url', 'views']}),
