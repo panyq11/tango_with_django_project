@@ -282,7 +282,7 @@ class CategoryAdmin(admin.ModelAdmin):
         ('Category Info',               {'fields': ['name']}),
         ('Community', {'fields': ['views', 'likes'], 'classes': ['collapse']}),# collapse，默认折叠
     ]
-    #  让 Page 作为 Category 的 Inline
+    #  Page as Inline of Category
     inlines = [PageInline]
 
 admin.site.register(Category, CategoryAdmin)
@@ -290,7 +290,7 @@ admin.site.register(Page)
 ```
 
 ```python
-# 实现字段纵向排列
+# Fields are arranged vertically
 class ChoiceInline(admin.TabularInline):
     # ...
 ```
@@ -298,7 +298,7 @@ class ChoiceInline(admin.TabularInline):
 
 **Customize the admin change list**
 
-让admin主页显示其余属性的内容
+Make the admin home page display some attributes of the content
 
 ```python
 class CategoryAdmin(admin.ModelAdmin):
@@ -308,7 +308,7 @@ class CategoryAdmin(admin.ModelAdmin):
 ```
 
 
-**为admin添加过滤器**
+**add filter for admin**
 ```python
 class Category(models.Model):
     # ...
@@ -345,11 +345,13 @@ admin.site.register(Category, CategoryAdmin)
 ```python
 # url
 path('category/<slug:category_name_slug>/', views.show_category, name='show_category'),
-# <slug:category_name_slug>作为参数传递views.show_category 视图
+# <slug:category_name_slug> as parameter to views.show_category 
 
 def show_category(request, category_name_slug):
   category = Category.objects.get(slug=category_name_slug)
   # ...
   return ...
-# 视图函数 show_category 通过 category_name_slug 查询数据库，返回对应分类
+# The view function show_category queries the database via category_name_slug and returns the corresponding category.
 ```
+
+# 8. Form
